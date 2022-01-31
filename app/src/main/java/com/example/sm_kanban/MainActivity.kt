@@ -14,6 +14,8 @@ class MainActivity : AppCompatActivity(), Callbacks {
         tabFrags[tabFrag.taskListType] = tabFrag
     }
 
+    val db = AppDB.writable
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)

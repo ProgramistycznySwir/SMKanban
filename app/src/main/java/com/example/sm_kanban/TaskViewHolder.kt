@@ -3,6 +3,7 @@ package com.example.sm_kanban
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -12,7 +13,13 @@ class TaskViewHolder(view: View, private val tab: TabFragment): RecyclerView.Vie
         set(value) {
             field = value
             titleView.text = field.title
+            titleView.addTextChangedListener {
+                field.title = it.toString()
+            }
             descriptionView.text = field.details
+            descriptionView.addTextChangedListener {
+                field.details = it.toString()
+            }
 
             leftButton.visibility = if(field.status == TaskStatus.Todo) View.INVISIBLE else View.VISIBLE
             rightButton.visibility = if(field.status == TaskStatus.Completed) View.INVISIBLE else View.VISIBLE
