@@ -12,12 +12,13 @@ object AppContract {
         const val COLUMN_DETAILS = "details"
     }
 
-    val SQL_CREATE_ENTRIES =
+    val SQL_CREATE_TABLE_TASKS =
         "CREATE TABLE ${TaskEntry.TABLE_NAME} (" +
                 "${TaskEntry.COLUMN_ID} INTEGER PRIMARY KEY," +
                 "${TaskEntry.COLUMN_STATUS} INTEGER," +
-                "${TaskEntry.COLUMN_TITLE} TEXT)" +
-                "${TaskEntry.COLUMN_DETAILS} TEXT)"
+                "${TaskEntry.COLUMN_TITLE} TEXT," +
+                "${TaskEntry.COLUMN_DETAILS} TEXT" +
+                ")"
 
-    val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${TaskEntry.TABLE_NAME}"
+    val SQL_DROP_TABLE_TASKS = "DROP TABLE IF EXISTS ${TaskEntry.TABLE_NAME}"
 }

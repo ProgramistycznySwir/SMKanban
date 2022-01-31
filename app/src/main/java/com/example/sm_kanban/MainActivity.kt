@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import java.util.*
 
+
 class MainActivity : AppCompatActivity(), Callbacks {
 
     private lateinit var taskViewModel: TaskViewModel
@@ -13,15 +14,21 @@ class MainActivity : AppCompatActivity(), Callbacks {
     fun registerTabFragment(tabFrag: TabFragment) {
         tabFrags[tabFrag.taskListType] = tabFrag
     }
+//    var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+//        override fun onReceive(context: Context?, intent: Intent?) {
+//            val intent = Intent(context, MainActivity::class.java)
+//            baseContext.startActivity(intent)
+//            finishAffinity()
+//        }
+//    }
 
-    val db = AppDB.writable
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
         val lang = sharedPreferences.getString("language_preference", "default")
         if(lang != "default") {
-            val locale = Locale("en")
+            val locale = Locale(lang)
             Locale.setDefault(locale)
             val config = baseContext.resources.configuration
             config.locale = locale
@@ -30,19 +37,29 @@ class MainActivity : AppCompatActivity(), Callbacks {
                 baseContext.resources.displayMetrics
             )
         }
+//        LocalBroadcastManager.getInstance(baseContext)
+//            .registerReceiver(broadcastReceiver, IntentFilter(Intent.ACTION_LOCALE_CHANGED))
+
 
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //Get viewmodel
+
         taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
         loadData()
     }
 
-    //When activity is stopped, write all viewmodel list data to shared prefs
     override fun onStop() {
         super.onStop()
-        saveData()
+        saveModifiedTasks()
+//        updateData()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+//        saveModifiedTasks()
+//        LocalBroadcastManager.getInstance(baseContext)
+//            .unregisterReceiver(broadcastReceiver)
+
     }
 
 
@@ -51,32 +68,40 @@ class MainActivity : AppCompatActivity(), Callbacks {
         val taskList = getTasks(task.status)
         taskList.add(task)
         tabFrags[task.status]?.notifyAdded(taskList!!.size)
+        val db: AppDB = AppDB(baseContext)
+        db.addTask(task)
+        db.close()
     }
-
+    override fun updateTask(task: Task) {
+        val db: AppDB = AppDB(baseContext)
+        db.updateTask(task)
+        db.close()
+    }
     override fun removeTask(type: TaskStatus, index: Int) {
+        val task = getTasks(type)[index]
         getTasks(type).removeAt(index)
+        val db: AppDB = AppDB(baseContext)
+        db.removeTask(task)
+        db.close()
     }
-
     override fun getTasks(tasklistType: TaskStatus): LinkedList<Task> {
         return taskViewModel.tasks[tasklistType]!!
     }
     //endregion
 
     private fun loadData() {
-        DEBUG_createExampleViewModel()
-    }
-    private fun saveData() {
-        //TODO: Save data
+        val db: AppDB = AppDB(baseContext)
+        taskViewModel.tasks = db.getTasks()
+        db.close()
+//        DEBUG_createExampleViewModel()
     }
 
-    private fun DEBUG_createExampleViewModel() {
-        taskViewModel.tasks = HashMap<TaskStatus, LinkedList<Task>>()
-        taskViewModel.tasks[TaskStatus.Todo] = LinkedList<Task>()
-        taskViewModel.tasks[TaskStatus.Todo]?.addAll(listOf(Task(status = TaskStatus.Todo, title = "Task1"),
-            Task(status = TaskStatus.Todo, title = "Task4")))
-        taskViewModel.tasks[TaskStatus.InProgress] = LinkedList<Task>()
-        taskViewModel.tasks[TaskStatus.InProgress]?.addAll(listOf(Task(status = TaskStatus.InProgress, title = "Task2")))
-        taskViewModel.tasks[TaskStatus.Completed] = LinkedList<Task>()
-        taskViewModel.tasks[TaskStatus.Completed]?.addAll(listOf(Task(status = TaskStatus.Completed, title = "Task3")))
+    private fun saveModifiedTasks() {
+        val db: AppDB = AppDB(baseContext)
+        for(list in taskViewModel.tasks.values)
+            for(task in list)
+                if(task.modified)
+                    db.updateTask(task)
+        db.close()
     }
 }

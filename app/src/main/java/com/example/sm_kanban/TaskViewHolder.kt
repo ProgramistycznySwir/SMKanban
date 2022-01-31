@@ -15,10 +15,12 @@ class TaskViewHolder(view: View, private val tab: TabFragment): RecyclerView.Vie
             titleView.text = field.title
             titleView.addTextChangedListener {
                 field.title = it.toString()
+                model.modified = true
             }
             descriptionView.text = field.details
             descriptionView.addTextChangedListener {
                 field.details = it.toString()
+                model.modified = true
             }
 
             leftButton.visibility = if(field.status == TaskStatus.Todo) View.INVISIBLE else View.VISIBLE

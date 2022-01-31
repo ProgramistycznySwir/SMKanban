@@ -91,8 +91,8 @@ class TabFragment : Fragment() {
         callbacks?.addTask(task)
     }
     fun moveTask(task: Task, index: Int) {
-        addTask(task)
         deleteTask(index)
+        addTask(task)
     }
 
     fun notifyAdded(index: Int) {
@@ -109,6 +109,10 @@ class TabFragment : Fragment() {
 
         override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
             holder.model = taskList[position]
+        }
+        override fun onViewRecycled(holder: TaskViewHolder) {
+            super.onViewRecycled(holder)
+            callbacks!!.updateTask(holder.model)
         }
 
         override fun getItemCount(): Int = taskList.size
