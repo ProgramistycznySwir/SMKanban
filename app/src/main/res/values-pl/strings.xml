@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="task_todo">Do zrobiena</string>
+    <string name="task_inProgress">W trakcie</string>
+    <string name="task_completed">Skończone</string>
+
+    <string name="delete_dialog_text">Czy jesteś pewien że chcesz usunąć to zadanie?</string>
+    <string name="delete_dialog_title">Usuń zadanie?</string>
+    <string name="delete_dialog_positive">Tak</string>
+    <string name="delete_dialog_negative">Nie</string>
+
+    <string name="language_pref_title">Język</string>
+</resources>

@@ -14,6 +14,13 @@
             app:key="reply"
             app:title="@string/reply_title"
             app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="reply"
+            app:entries="@array/language_preference"
+            app:entryValues="@array/language_preference"
+            app:key="language_preference"
+            app:title="@string/language_pref_title"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 

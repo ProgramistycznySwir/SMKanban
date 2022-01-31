@@ -1,10 +1,10 @@
 package com.example.sm_kanban
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import java.util.*
-import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity(), Callbacks {
 
@@ -16,6 +16,20 @@ class MainActivity : AppCompatActivity(), Callbacks {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+        val lang = sharedPreferences.getString("language_preference", "default")
+        if(lang != "default") {
+            val locale = Locale("en")
+            Locale.setDefault(locale)
+            val config = baseContext.resources.configuration
+            config.locale = locale
+            baseContext.resources.updateConfiguration(
+                config,
+                baseContext.resources.displayMetrics
+            )
+        }
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //Get viewmodel
