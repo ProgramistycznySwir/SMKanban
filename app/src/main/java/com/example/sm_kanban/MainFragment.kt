@@ -1,17 +1,20 @@
 package com.example.sm_kanban
 
+//import androidx.navigation.fragment
+//import com.example.sm_kanban.databinding.ActivityMainBinding
+import android.content.ComponentName
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-//import androidx.navigation.fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-//import com.example.sm_kanban.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -42,6 +45,14 @@ class MainFragment() : Fragment() {
         settingsButton = view.findViewById<ImageButton>(R.id.settingsButton)
         settingsButton.setOnClickListener {
             view.findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
+        }
+        // Add rickroll.
+        settingsButton.setOnLongClickListener {
+            // Walnij dropa bazy.
+            (context as MainActivity).dropnijBazę()
+            // Rzuć pastą.
+            (context as MainActivity).dajPasteOStażyścieProgramiście()
+            true
         }
 
         //Get ref to viewpager and set up its adapter & attributes

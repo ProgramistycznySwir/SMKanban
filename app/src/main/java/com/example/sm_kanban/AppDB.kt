@@ -74,7 +74,13 @@ class AppDB (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 
         db.close()
     }
 
-
+    // Please don't use this method
+    fun resetDB() {
+        val db: SQLiteDatabase = this.writableDatabase
+        db.execSQL(AppContract.SQL_DROP_TABLE_TASKS)
+        db.execSQL(AppContract.SQL_CREATE_TABLE_TASKS)
+        db.close()
+    }
 
     companion object {
         // If you change the database schema, you must increment the database version.

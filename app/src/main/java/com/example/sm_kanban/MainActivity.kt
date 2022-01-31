@@ -1,5 +1,7 @@
 package com.example.sm_kanban
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -102,6 +104,25 @@ class MainActivity : AppCompatActivity(), Callbacks {
             for(task in list)
                 if(task.modified)
                     db.updateTask(task)
+        db.close()
+    }
+
+    fun dajPasteOStażyścieProgramiście() {
+        val intent: Intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://youtu.be/pxrQEp6hqNQ")
+        )
+        intent.setPackage("com.google.android.youtube");
+//        intent.component = ComponentName(
+//            "com.google.android.youtube",
+//            "com.google.android.youtube.PlayerActivity"
+//        )
+
+        startActivity(intent)
+    }
+    fun dropnijBazę() {
+        val db: AppDB = AppDB(baseContext)
+        db.resetDB()
         db.close()
     }
 }
