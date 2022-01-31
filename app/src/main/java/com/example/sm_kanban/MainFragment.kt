@@ -5,22 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 //import androidx.navigation.fragment
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 //import com.example.sm_kanban.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import java.util.*
-import kotlin.collections.HashMap
 
 
 /**
@@ -34,16 +27,10 @@ class MainFragment() : Fragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 
+    lateinit var addTaskFAB: FloatingActionButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
-
-
-        //Read tasklist data from shared prefs and populate viewmodel lists with it
-//        readSharedPrefsToViewModel()
     }
 
     override fun onCreateView(
@@ -70,6 +57,11 @@ class MainFragment() : Fragment() {
         TabLayoutMediator(tabLayout, viewPager) {tab, position ->
             tab.text = TaskStatus.getLocalizedString(view.context, position)
         }.attach()
+
+        addTaskFAB = view.findViewById(R.id.floatingActionButton5)
+        addTaskFAB.setOnClickListener { 
+            (context as MainActivity).addTask(Task(status = TaskStatus.get(viewPager.currentItem)))
+        }
         return view
     }
 
@@ -91,21 +83,11 @@ class MainFragment() : Fragment() {
 
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MainFragment.
-         */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             MainFragment().apply {
                 arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
                 }
             }
     }

@@ -34,33 +34,38 @@ class MainActivity : AppCompatActivity(), Callbacks {
         setContentView(R.layout.activity_main)
         //Get viewmodel
         taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
-        DEBUG_createExampleViewModel()
+        loadData()
     }
 
     //When activity is stopped, write all viewmodel list data to shared prefs
     override fun onStop() {
         super.onStop()
-        //TODO: Save data
+        saveData()
     }
 
 
     //region >>> Callbacks Implementation <<<
-    override fun addTaskToViewModel(task: Task) {
-        val taskList = getTaskListFromViewModel(task.status)
+    override fun addTask(task: Task) {
+        val taskList = getTasks(task.status)
         taskList.add(task)
         tabFrags[task.status]?.notifyAdded(taskList!!.size)
     }
 
-    override fun deleteTaskFromViewModel(type: TaskStatus, index: Int) {
-        getTaskListFromViewModel(type).removeAt(index)
+    override fun removeTask(type: TaskStatus, index: Int) {
+        getTasks(type).removeAt(index)
     }
 
-    override fun getTaskListFromViewModel(tasklistType: TaskStatus): LinkedList<Task> {
+    override fun getTasks(tasklistType: TaskStatus): LinkedList<Task> {
         return taskViewModel.tasks[tasklistType]!!
     }
     //endregion
 
-
+    private fun loadData() {
+        DEBUG_createExampleViewModel()
+    }
+    private fun saveData() {
+        //TODO: Save data
+    }
 
     private fun DEBUG_createExampleViewModel() {
         taskViewModel.tasks = HashMap<TaskStatus, LinkedList<Task>>()

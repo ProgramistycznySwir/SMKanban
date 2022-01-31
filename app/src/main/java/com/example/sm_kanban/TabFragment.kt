@@ -61,7 +61,7 @@ class TabFragment : Fragment() {
     }
 
     private fun updateInterface(){
-        val tasks = callbacks!!.getTaskListFromViewModel(taskListType)
+        val tasks = callbacks!!.getTasks(taskListType)
         taskListAdapter = TaskListAdapter(tasks, this)
         taskRecyclerView.adapter = taskListAdapter
     }
@@ -84,11 +84,11 @@ class TabFragment : Fragment() {
     }
 
     fun deleteTask(index: Int) {
-        callbacks?.deleteTaskFromViewModel(taskListType, index)
+        callbacks?.removeTask(taskListType, index)
         taskListAdapter.notifyItemRemoved(index)
     }
     fun addTask(task: Task) {
-        callbacks?.addTaskToViewModel(task)
+        callbacks?.addTask(task)
     }
     fun moveTask(task: Task, index: Int) {
         addTask(task)
